@@ -81,6 +81,11 @@ Public Class Form1
                                         End Try
                                         item.AddNewLocation(Convert.ToInt32(Newloc.ID), Authd)
 
+                                        If item.PackSize > 0 Then
+                                            item.Title.Invoice = item.GetLocation(SKULocation.SKULocationType.Pickable).LocationText + item.Title.Invoice.Substring(6)
+                                        End If
+                                        item.SaveChanges(Authd, "Title updated for item with Location Modifier")
+
                                     Next
                                     Log(Activeitem(0).ShortSku + " Pick: " = Newloc.text)
                                     ShowItemDetails(Activeitem)
@@ -88,6 +93,11 @@ Public Class Form1
                                 Catch ex As NullReferenceException
                                     For Each item As WhlSKU In Activeitem
                                         item.AddNewLocation(Convert.ToInt32(Newloc.ID), Authd)
+
+                                        If item.PackSize > 0 Then
+                                            item.Title.Invoice = item.GetLocation(SKULocation.SKULocationType.Pickable).LocationText + item.Title.Invoice.Substring(6)
+                                        End If
+                                        item.SaveChanges(Authd, "Title updated for item with Location Modifier")
 
                                     Next
                                     ShowItemDetails(Activeitem)
