@@ -69,7 +69,8 @@ Public Class Form1
                                     '    Dialog("This warehouse already contains this item at " + Activeitem(0).GetLocation(SKULocation.SKULocationType.Pickable).LocationText)
                                     'Else
                                     For Each item As WhlSKU In Activeitem
-                                            item.RemoveLocation(item.GetLocation(SKULocation.SKULocationType.Pickable).LocationID, Authd)
+                                        Dim old As SKULocation = item.GetLocation(SKULocation.SKULocationType.Pickable)
+                                        item.RemoveLocation(item.GetLocation(SKULocation.SKULocationType.Pickable).LocationID, Authd)
                                         Try
                                             'Remove any additional ones.
                                             item.RemoveLocation(item.GetLocation(SKULocation.SKULocationType.Pickable).LocationID, Authd)
@@ -80,11 +81,10 @@ Public Class Form1
 
                                         End Try
                                         item.AddNewLocation(Convert.ToInt32(Newloc.ID), Authd)
-
                                         If item.PackSize > 0 Then
                                             item.Title.Invoice = item.GetLocation(SKULocation.SKULocationType.Pickable).LocationText + item.Title.Invoice.Substring(6)
                                         End If
-                                        item.SaveChanges(Authd, "Title updated for item with Location Modifier")
+                                        item.SaveChanges(Authd, "LocMod (PICK): " + old.LocationText + " To " + Newloc.text)
 
                                     Next
                                     Log(Activeitem(0).ShortSku + " Pick: " = Newloc.text)
@@ -97,7 +97,7 @@ Public Class Form1
                                         If item.PackSize > 0 Then
                                             item.Title.Invoice = item.GetLocation(SKULocation.SKULocationType.Pickable).LocationText + item.Title.Invoice.Substring(6)
                                         End If
-                                        item.SaveChanges(Authd, "Title updated for item with Location Modifier")
+                                        item.SaveChanges(Authd, "LocMod (PICK): Added " + Newloc.text)
 
                                     Next
                                     ShowItemDetails(Activeitem)
@@ -131,6 +131,7 @@ Public Class Form1
                                 For Each item As WhlSKU In Activeitem
                                     item.AddNewLocation(Convert.ToInt32(Newloc.ID), Authd)
                                     'StoreLocations.Text += Newloc.text
+                                    item.RecordChangelog(Authd, "LocMod (STOR): Added " + Newloc.text)
                                 Next
                                 ShowItemDetails(Activeitem)
 
