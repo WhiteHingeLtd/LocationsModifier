@@ -85,9 +85,10 @@ Public Class Form1
                                             item.Title.Invoice = item.GetLocation(SKULocation.SKULocationType.Pickable).LocationText + item.Title.Invoice.Substring(6)
                                         End If
                                         item.SaveChanges(Authd, "LocMod (PICK): " + old.LocationText + " To " + Newloc.text)
+                                        item.SetGroupStatus("Special", Authd, "LocMod (PICK): " + old.LocationText + " To " + Newloc.text)
 
                                     Next
-                                    Log(Activeitem(0).ShortSku + " Pick: " = Newloc.text)
+                                    Log(Activeitem(0).ShortSku + " Pick:  " = Newloc.text)
                                     ShowItemDetails(Activeitem)
                                     'End If
                                 Catch ex As NullReferenceException
@@ -98,6 +99,7 @@ Public Class Form1
                                             item.Title.Invoice = item.GetLocation(SKULocation.SKULocationType.Pickable).LocationText + item.Title.Invoice.Substring(6)
                                         End If
                                         item.SaveChanges(Authd, "LocMod (PICK): Added " + Newloc.text)
+                                        item.SetGroupStatus("Special", Authd, "LocMod (PICK): " + Newloc.text)
 
                                     Next
                                     ShowItemDetails(Activeitem)
