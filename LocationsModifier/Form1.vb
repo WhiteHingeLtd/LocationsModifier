@@ -130,15 +130,21 @@ Public Class Form1
                             'Change the picking location if the existing one isnt warehouse 2
                             Dim Newloc As Lookupresult = Lookup(Scantext.Replace("qlo", "").TrimStart("0"))
                             If Newloc.type = SKULocation.SKULocationType.Storage Then
-                                For Each item As WhlSKU In Activeitem
-                                    item.AddNewLocation(Convert.ToInt32(Newloc.ID), Authd)
-                                    'StoreLocations.Text += Newloc.text
-                                    item.RecordChangelog(Authd, "LocMod (STOR): Added " + Newloc.text)
-                                Next
+                                If Activeitem(0).GetLocationsByType(SKULocation.SKULocationType.Storage).Where(Function(x As SKULocation) x.LocationID = Newloc.ID).Count = 0 Then
+                                    For Each item As WhlSKU In Activeitem
+                                        item.AddNewLocation(Convert.ToInt32(Newloc.ID), Authd)
+                                    Next
+                                    Activeitem(0).RecordChangelog(Authd, "LocMod (STOR): Added " + Newloc.text)
+                                Else
+                                    If Dialog("Do you want to remove " + Newloc.text + " from this item?", True) = DialogResult.Yes Then
+                                        For Each item As WhlSKU In Activeitem
+                                            item.RemoveLocation(Convert.ToInt32(Newloc.ID), Authd)
+                                        Next
+                                        Activeitem(0).RecordChangelog(Authd, "LocMod (STOR): Removed " + Newloc.text)
+                                    End If
+                                End If
                                 ShowItemDetails(Activeitem)
-
                                 Log(Activeitem(0).ShortSku + " Store +: " = Newloc.text)
-
                             Else
                                 Dialog("This is not a storage location.")
                             End If
