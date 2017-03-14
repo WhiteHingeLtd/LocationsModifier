@@ -114,7 +114,7 @@ Public Class Form1
                             Instruct("Scan an item")
                         Else
                             Try
-                                Dim scanresponse As WhlSKU = skus.SearchSKUS(Scantext, True)(0)
+                                Dim scanresponse As WhlSKU = skus.SearchBarcodes(Scantext)(0)
                                 Dim kids As SkuCollection = skus.GatherChildren(scanresponse.ShortSku)
                                 Activeitem = kids
                                 ShowItemDetails(kids)
@@ -153,7 +153,7 @@ Public Class Form1
                             Instruct("Scan an item")
                         Else
                             Try
-                                Dim scanresponse As WhlSKU = skus.SearchSKUS(Scantext, True)(0)
+                                Dim scanresponse As WhlSKU = skus.SearchBarcodes(Scantext)(0)
                                 Dim kids As SkuCollection = skus.GatherChildren(scanresponse.ShortSku)
                                 Activeitem = kids
                                 ShowItemDetails(kids)
@@ -175,7 +175,7 @@ Public Class Form1
                                 ItemDetails.Text = ResultString
                             End If
                         Else
-                            Dim scanresponse As WhlSKU = skus.SearchSKUS(Scantext, True)(0)
+                            Dim scanresponse As WhlSKU = skus.SearchBarcodes(Scantext)(0)
                             Dim kids As SkuCollection = skus.GatherChildren(scanresponse.ShortSku)
                             If kids.Count > 0 Then
                                 ShowItemDetails(kids)
