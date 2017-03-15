@@ -114,7 +114,7 @@ Public Class Form1
                             Instruct("Scan an item")
                         Else
                             Try
-                                Dim scanresponse As WhlSKU = skus.SearchBarcodes(Scantext)(0)
+                                Dim scanresponse As WhlSKU = SpecialSearch(skus,Scantext)(0)
                                 Dim kids As SkuCollection = skus.GatherChildren(scanresponse.ShortSku)
                                 Activeitem = kids
                                 ShowItemDetails(kids)
@@ -153,7 +153,7 @@ Public Class Form1
                             Instruct("Scan an item")
                         Else
                             Try
-                                Dim scanresponse As WhlSKU = skus.SearchBarcodes(Scantext)(0)
+                                Dim scanresponse As WhlSKU = SpecialSearch(skus,Scantext)(0)
                                 Dim kids As SkuCollection = skus.GatherChildren(scanresponse.ShortSku)
                                 Activeitem = kids
                                 ShowItemDetails(kids)
@@ -175,7 +175,7 @@ Public Class Form1
                                 ItemDetails.Text = ResultString
                             End If
                         Else
-                            Dim scanresponse As WhlSKU = skus.SearchBarcodes(Scantext)(0)
+                            Dim scanresponse As WhlSKU = SpecialSearch(skus,Scantext)(0)
                             Dim kids As SkuCollection = skus.GatherChildren(scanresponse.ShortSku)
                             If kids.Count > 0 Then
                                 ShowItemDetails(kids)
@@ -274,6 +274,14 @@ Public Class Form1
             End If
         End If
     End Sub
+
+    Private Function SpecialSearch(Collection As SkuCollection, Term as string) As SkuCollection
+        if term.Length = 7 Then
+            Return Collection.GatherChildren(term)
+        Else 
+            Return collection.SearchBarcodes(term)
+        End If
+    End Function
 
     Public Sub ShowItemDetails(Items As SkuCollection)
         Dim item As WhlSKU = Items(0)
